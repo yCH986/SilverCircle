@@ -7,6 +7,7 @@ import {
   SeniorMatchQuery,
   SINGSTAT_M810771_JSON_SCHEMA,
 } from './server/singstatSchema';
+import { getSingStatPopulationData } from './server/singstatPopulationService';
 
 async function startServer() {
   const app = express();
@@ -18,6 +19,20 @@ async function startServer() {
   // Health check endpoint
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', service: 'SilverCircle Senior Matching API' });
+  });
+
+  // SingStat Table M810771 Planning Region Senior Population Endpoint (2019-2025)
+  app.get('/api/singstat/population', async (req, res) => {
+    try {
+      const data = await getSingStatPopulationData();
+      res.json(data);
+    } catch (err) {
+      console.error('Error in /api/singstat/population:', err);
+      res.status(500).json({
+        success: false,
+        error: 'Unable to retrieve SingStat population dataset at this time',
+      });
+    }
   });
 
   // SingStat Table TS/M810771 JSON Schema specification

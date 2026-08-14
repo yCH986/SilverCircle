@@ -205,7 +205,7 @@ export const DiscoverSetupScreen: React.FC<DiscoverSetupScreenProps> = ({
         </div>
 
         {/* Submit Match Button */}
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center mt-4 mb-4">
           <button
             type="button"
             onClick={onSubmitSearch}

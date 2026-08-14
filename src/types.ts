@@ -50,7 +50,40 @@ export interface SingStatM810771Data {
   }[];
 }
 
+export interface PlanningRegionMatchInfo {
+  regionCode: string;
+  regionName: string;
+  matchedSeniorsCount: number;
+  totalSeniorsInRegion: number;
+  totalPopulationInRegion: number;
+  percentageOfNationalCohort: number;
+  percentageOfRegionSeniors: number;
+  matchScore: number;
+  activeWeeklyEstimate: number;
+  rank: number;
+  keyEstates: string[];
+  primaryEstate: string;
+  transitSummary: string;
+  socialNote: string;
+  demographicBreakdown: {
+    ageBand: string;
+    matchedCount: number;
+    male: number;
+    female: number;
+    total: number;
+  }[];
+}
+
 export interface DistrictMatchResult {
+  planningRegion: PlanningRegionMatchInfo;
+  allRegionRankings: PlanningRegionMatchInfo[];
+  selectedFiltersSummary: {
+    gender: GenderOption;
+    ageRanges: AgeRangeOption[];
+    selectedYear: string;
+    totalNationalMatchedSeniors: number;
+    totalNationalSeniors60Plus: number;
+  };
   district: SingStatDistrictData;
   matchRate: number; // percentage, e.g., 87%
   potentialFriendsCount: number;
@@ -108,3 +141,38 @@ export interface HangoutSpot {
 }
 
 export type AppScreen = 'home' | 'discover' | 'results' | 'hangout-spots' | 'about-us';
+
+export interface SingStatRegionPopulationData {
+  regionCode: string;
+  regionName: string;
+  totalSeniors60Plus: number;
+  totalPopulation: number;
+  maleSeniors60Plus: number;
+  femaleSeniors60Plus: number;
+  ageBands60Plus: {
+    ageBand: string;
+    total: number;
+    male: number;
+    female: number;
+  }[];
+}
+
+export interface SingStatPlanningRegionApiResponse {
+  success: boolean;
+  isLive: boolean;
+  source: string;
+  tableId: string;
+  tableName: string;
+  unitOfMeasure: string;
+  lastUpdated: string;
+  availableYears: string[];
+  latestYear: string;
+  dataByYear: Record<
+    string,
+    {
+      year: string;
+      totalSingaporeSeniors60Plus: number;
+      regions: SingStatRegionPopulationData[];
+    }
+  >;
+}

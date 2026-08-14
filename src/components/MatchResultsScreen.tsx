@@ -14,49 +14,131 @@ export const MatchResultsScreen: React.FC<MatchResultsScreenProps> = ({
   onAdjustFilters,
   onOpenSingStat,
 }) => {
-  const district = result.district;
-  const singstat = result.singstatSource;
+  const region = result.planningRegion;
+  const filtersSummary = result.selectedFiltersSummary;
+
+  // Region badge theme
+  const getRegionTheme = (code: string) => {
+    switch (code) {
+      case 'central':
+        return {
+          pill: 'bg-[#0d5c63]/15 text-[#004349] border-[#0d5c63]/30',
+          bar: 'bg-[#0d5c63]',
+          accentText: 'text-[#0d5c63]',
+          bannerBg: 'bg-[#004349]',
+        };
+      case 'east':
+        return {
+          pill: 'bg-[#ffdad4]/70 text-[#701104] border-[#a73927]/30',
+          bar: 'bg-[#a73927]',
+          accentText: 'text-[#a73927]',
+          bannerBg: 'bg-[#a73927]',
+        };
+      case 'north-east':
+        return {
+          pill: 'bg-[#c5e7ff]/70 text-[#001e2c] border-[#124157]/30',
+          bar: 'bg-[#124157]',
+          accentText: 'text-[#124157]',
+          bannerBg: 'bg-[#124157]',
+        };
+      case 'west':
+        return {
+          pill: 'bg-[#90d2da]/30 text-[#004349] border-[#2b6475]/30',
+          bar: 'bg-[#2b6475]',
+          accentText: 'text-[#2b6475]',
+          bannerBg: 'bg-[#2b6475]',
+        };
+      case 'north':
+      default:
+        return {
+          pill: 'bg-[#efeeec] text-[#1a1c1b] border-[#c3c7c9]',
+          bar: 'bg-[#5b6468]',
+          accentText: 'text-[#3f484a]',
+          bannerBg: 'bg-[#5b6468]',
+        };
+    }
+  };
+
+  const topTheme = getRegionTheme(region.regionCode);
+
+  const genderLabel =
+    filtersSummary?.gender === 'female'
+      ? 'Female Seniors'
+      : filtersSummary?.gender === 'male'
+      ? 'Male Seniors'
+      : 'All Senior Residents';
+
+  const ageRangesLabel =
+    filtersSummary?.ageRanges && filtersSummary.ageRanges.length > 0
+      ? `Ages ${filtersSummary.ageRanges.join(', ')}`
+      : 'All Seniors (60+)';
 
   return (
     <div className="flex flex-col w-full bg-[#faf9f7] pb-16">
-      {/* Top Banner Matching Screen */}
-      <div className="relative w-full overflow-hidden bg-[#f4f3f1] min-h-[420px] flex items-center py-12 px-5 md:px-10 rounded-b-[32px] border-b border-[#e3e2e0]">
+      {/* Top Banner: Best Matched Planning Region */}
+      <div className="relative w-full overflow-hidden bg-[#f4f3f1] min-h-[440px] flex items-center py-12 px-5 md:px-10 rounded-b-[36px] border-b border-[#e3e2e0]">
         <div
-          className="absolute inset-0 opacity-25 pointer-events-none"
+          className="absolute inset-0 opacity-30 pointer-events-none"
           style={{
             backgroundImage:
-              'radial-gradient(circle at 70% 30%, #abeef6 0%, transparent 50%), radial-gradient(circle at 30% 70%, #c5e7ff 0%, transparent 50%)',
+              'radial-gradient(circle at 70% 30%, #abeef6 0%, transparent 50%), radial-gradient(circle at 25% 75%, #c5e7ff 0%, transparent 50%)',
           }}
         />
 
-        <div className="max-w-[1140px] mx-auto w-full relative z-10 flex flex-col md:flex-row items-center gap-10">
+        <div className="max-w-[1140px] mx-auto w-full relative z-10 flex flex-col lg:flex-row items-center gap-10">
           {/* Left Hero Text */}
-          <div className="w-full md:w-1/2 flex flex-col gap-5">
-            <div className="flex items-center gap-2 text-[#004349]">
-              <span className="material-symbols-outlined text-[32px]" style={{ fontVariationSettings: "'FILL' 1" }}>
-                stars
+          <div className="w-full lg:w-3/5 flex flex-col gap-5">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#004349] text-white text-xs uppercase font-bold tracking-wider rounded-full shadow-sm">
+                <span className="material-symbols-outlined text-[16px]">verified</span>
+                #1 Best Matched Planning Region
               </span>
-              <span className="font-bold text-sm tracking-wider uppercase text-[#004349]">
-                Your Top Match
+              <span className="text-xs font-semibold text-[#5b6468]">
+                SingStat Table M810771
               </span>
             </div>
 
-            <h1 className="font-headline font-bold text-4xl sm:text-5xl text-[#1a1c1b] leading-tight">
-              {district.name} is your best match today!
+            <h1 className="font-headline font-extrabold text-4xl sm:text-5xl text-[#1a1c1b] leading-tight">
+              {region.regionName} is your best demographic match!
             </h1>
 
-            <p className="text-xl text-[#3f484a] max-w-[500px] leading-relaxed">
-              Calculated using official population distributions from Singapore Department of Statistics (Table TS/M810771).
+            {/* Filter Applied Pill */}
+            <div className="bg-white/90 backdrop-blur-sm p-4 rounded-2xl border border-[#e3e2e0] shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <span className="material-symbols-outlined text-[#004349] text-[28px]">
+                  filter_alt
+                </span>
+                <div>
+                  <span className="text-xs font-bold text-[#73787a] uppercase tracking-wider block">
+                    Applied Filter Criteria
+                  </span>
+                  <span className="text-base font-bold text-[#1a1c1b]">
+                    {genderLabel} • {ageRangesLabel}
+                  </span>
+                </div>
+              </div>
+
+              <div className="sm:text-right border-t sm:border-t-0 sm:border-l border-[#e3e2e0] pt-2 sm:pt-0 sm:pl-4">
+                <span className="text-xs text-[#73787a] block">SingStat Census</span>
+                <span className="text-sm font-extrabold text-[#004349]">
+                  {filtersSummary?.selectedYear || '2025'} Dataset
+                </span>
+              </div>
+            </div>
+
+            <p className="text-lg text-[#3f484a] leading-relaxed">
+              Based on official SingStat data, <strong className="text-[#1a1c1b]">{region.matchedSeniorsCount.toLocaleString()} {genderLabel.toLowerCase()}</strong> matching your exact age criteria reside in the <strong className="text-[#1a1c1b]">{region.regionName}</strong>, representing <strong className="text-[#004349]">{region.percentageOfNationalCohort}%</strong> of Singapore's matching senior population.
             </p>
 
+            {/* CTA Buttons */}
             <div className="flex flex-wrap gap-4 mt-2">
               <button
                 type="button"
                 onClick={onViewHangoutSpots}
-                className="bg-[#a73927] hover:bg-[#701104] text-white font-bold text-xl px-8 py-4 rounded-2xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 flex items-center gap-3 cursor-pointer group"
+                className="bg-[#a73927] hover:bg-[#701104] text-white font-bold text-lg sm:text-xl px-7 py-4 rounded-2xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-3 cursor-pointer group"
               >
-                <span>View Recommended Spots</span>
-                <span className="material-symbols-outlined transition-transform group-hover:translate-x-1 text-[26px]">
+                <span>Explore Spots in {region.regionName}</span>
+                <span className="material-symbols-outlined transition-transform group-hover:translate-x-1 text-[24px]">
                   arrow_forward
                 </span>
               </button>
@@ -64,7 +146,7 @@ export const MatchResultsScreen: React.FC<MatchResultsScreenProps> = ({
               <button
                 type="button"
                 onClick={onAdjustFilters}
-                className="bg-white hover:bg-[#efeeec] text-[#004349] border-2 border-[#004349] font-bold text-lg px-6 py-4 rounded-2xl transition-colors flex items-center gap-2 cursor-pointer shadow-sm"
+                className="bg-white hover:bg-[#efeeec] text-[#004349] border-2 border-[#004349] font-bold text-base sm:text-lg px-6 py-4 rounded-2xl transition-colors flex items-center gap-2 cursor-pointer shadow-sm"
               >
                 <span className="material-symbols-outlined text-[20px]">tune</span>
                 <span>Adjust Filters</span>
@@ -72,131 +154,98 @@ export const MatchResultsScreen: React.FC<MatchResultsScreenProps> = ({
             </div>
           </div>
 
-          {/* Right Map Card */}
-          <div className="w-full md:w-1/2 relative h-[320px] md:h-[400px] rounded-3xl overflow-hidden shadow-2xl group border-2 border-white">
-            <div
-              className="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-              style={{ backgroundImage: `url('${district.mapImage}')` }}
-              role="img"
-              aria-label={`${district.name} Singapore Map`}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+          {/* Right Region Highlights Card */}
+          <div className="w-full lg:w-2/5 flex flex-col gap-4">
+            <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-xl border border-[#e3e2e0] flex flex-col gap-5 relative overflow-hidden">
+              <div className="flex items-center justify-between border-b border-[#e3e2e0] pb-4">
+                <div>
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${topTheme.pill}`}>
+                    Top Rank (#1)
+                  </span>
+                  <h2 className="font-headline font-extrabold text-2xl sm:text-3xl text-[#1a1c1b] mt-1.5">
+                    {region.regionName}
+                  </h2>
+                </div>
+                <div className="text-right">
+                  <span className="font-headline text-3xl sm:text-4xl font-extrabold text-[#004349] block">
+                    {region.matchScore}%
+                  </span>
+                  <span className="text-xs font-semibold text-[#73787a]">Match Rate</span>
+                </div>
+              </div>
 
-            {/* Matches badge */}
-            <div className="absolute bottom-6 left-6 right-6">
-              <div className="bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl inline-flex items-center gap-4 border border-[#e3e2e0]">
-                <div className="w-14 h-14 rounded-2xl bg-[#004349] flex items-center justify-center shrink-0 shadow-sm">
-                  <span className="material-symbols-outlined text-white text-[28px]" style={{ fontVariationSettings: "'FILL' 1" }}>
-                    group_add
+              {/* Matched Count Metric */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-[#f4f3f1] p-3.5 rounded-xl border border-[#e3e2e0]">
+                  <span className="text-xs font-semibold text-[#73787a] block">
+                    Matched Demographic
+                  </span>
+                  <span className="font-headline font-bold text-xl sm:text-2xl text-[#1a1c1b]">
+                    {region.matchedSeniorsCount.toLocaleString()}
+                  </span>
+                  <span className="text-[11px] text-[#004349] font-bold block mt-0.5">
+                    {region.percentageOfNationalCohort}% of Singapore
                   </span>
                 </div>
-                <div>
-                  <div className="font-headline font-bold text-xl text-[#1a1c1b]">
-                    {result.potentialFriendsCount} Matches
-                  </div>
-                  <div className="text-base text-[#3f484a] font-medium">
-                    Active this week in {district.name}
-                  </div>
+
+                <div className="bg-[#f4f3f1] p-3.5 rounded-xl border border-[#e3e2e0]">
+                  <span className="text-xs font-semibold text-[#73787a] block">
+                    Active Weekly Peers
+                  </span>
+                  <span className="font-headline font-bold text-xl sm:text-2xl text-[#a73927]">
+                    ~{region.activeWeeklyEstimate}
+                  </span>
+                  <span className="text-[11px] text-[#73787a] block mt-0.5">
+                    Community participants
+                  </span>
                 </div>
+              </div>
+
+              {/* Prominent Towns in this Region */}
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#73787a] block mb-2">
+                  Key Towns & Estates in {region.regionName}
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {region.keyEstates.map((estate) => (
+                    <span
+                      key={estate}
+                      className="px-3 py-1 bg-[#efeeec] text-[#1a1c1b] text-sm font-semibold rounded-lg border border-[#e3e2e0]"
+                    >
+                      {estate}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Regional Transit & Social Note */}
+              <div className="text-xs text-[#3f484a] bg-[#faf9f7] p-3.5 rounded-xl border border-[#e3e2e0] flex items-start gap-2.5">
+                <span className="material-symbols-outlined text-[#004349] text-[20px] shrink-0">
+                  directions_subway
+                </span>
+                <p className="leading-relaxed">{region.transitSummary}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Breakdown Section */}
-      <div className="max-w-[1140px] mx-auto w-full px-5 mt-12 mb-8 flex flex-col gap-8">
-        {/* Potential Friends Statistics */}
-        <div className="bg-[#0d5c63] text-white p-8 md:p-10 rounded-3xl shadow-xl flex flex-col lg:flex-row gap-8 items-stretch justify-between border border-[#90d2da]/30">
-          <div className="flex-1 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between mb-6">
-                <span className="font-headline font-bold text-2xl tracking-wide">
-                  Potential Friends
-                </span>
-                <span className="material-symbols-outlined text-[34px] text-[#90d2da]" style={{ fontVariationSettings: "'FILL' 1" }}>
-                  monitoring
-                </span>
-              </div>
-
-              <div className="flex items-baseline gap-3 mb-3">
-                <span className="font-headline text-[64px] font-extrabold leading-none text-white">
-                  {result.matchRate}%
-                </span>
-                <span className="text-xl text-[#90d2da] font-medium">
-                  Match Rate
-                </span>
-              </div>
-
-              <p className="text-lg text-white/90 leading-relaxed mb-6">
-                {district.name} shows a significantly higher concentration of seniors sharing your age group and preferred community activities compared to other districts.
-              </p>
-            </div>
-
-            {singstat && (
-              <div className="bg-white/10 p-3.5 rounded-xl border border-white/15 text-xs text-white/90 space-y-1">
-                <div className="font-semibold text-[#90d2da] flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[16px]">database</span>
-                  <span>SingStat Table M810771</span>
-                </div>
-                <div>
-                  Singapore Citizens By Age Group & Sex (DOS {singstat.lastUpdatedYear})
-                </div>
-                <div className="text-white/80">
-                  Matched National Cohort: <strong className="text-white">{singstat.matchedNationalDemographicCount.toLocaleString()} seniors</strong>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Bar charts for Singapore districts */}
-          <div className="lg:w-[420px] bg-black/20 p-6 rounded-2xl border border-white/10 flex flex-col justify-center">
-            <div className="text-sm font-semibold text-[#90d2da] mb-4 flex items-center justify-between">
-              <span>District Demographic Distribution</span>
-              <button
-                onClick={onOpenSingStat}
-                className="underline hover:text-white transition-colors cursor-pointer text-xs"
-              >
-                View Details
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              {result.comparisonScores.map((item, idx) => (
-                <div key={item.districtName}>
-                  <div className="flex justify-between text-base font-semibold mb-1 text-white">
-                    <span>{item.districtName}</span>
-                    <span>{item.count}</span>
-                  </div>
-                  <div className="w-full bg-white/20 rounded-full h-3.5 overflow-hidden">
-                    <div
-                      className={`h-3.5 rounded-full transition-all duration-1000 ${
-                        idx === 0 ? 'bg-[#90d2da] relative shadow-sm' : 'bg-[#90d2da]/50'
-                      }`}
-                      style={{ width: `${item.percentage}%` }}
-                    >
-                      {idx === 0 && (
-                        <div className="absolute inset-0 bg-white/30 animate-pulse" />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Blue Banner: Ready to explore */}
+      {/* Main Action Section */}
+      <div className="max-w-[1140px] mx-auto w-full px-5 mt-10 mb-8 flex flex-col gap-10">
+        {/* Explore Hangout Spots Banner */}
         <div className="relative rounded-3xl overflow-hidden bg-[#124157] text-white p-8 md:p-10 shadow-xl border border-[#a3cde8]/30">
           <div className="absolute right-0 top-0 w-64 h-64 bg-[#c5e7ff] opacity-10 rounded-full -translate-y-1/2 translate-x-1/4 blur-2xl pointer-events-none" />
-          
+
           <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div>
-              <h4 className="font-headline font-bold text-2xl md:text-3xl mb-2 text-white">
-                Ready to explore?
-              </h4>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#90d2da] block mb-1">
+                Next Step
+              </span>
+              <h3 className="font-headline font-bold text-2xl md:text-3xl mb-2 text-white">
+                Explore Hangouts in {region.regionName}
+              </h3>
               <p className="text-lg text-white/90 max-w-xl leading-relaxed">
-                Discover accessible parks, quiet cafes, and active community centers in {district.name}.
+                Discover step-free parks, quiet cafes, and active senior wellness hubs across {region.keyEstates.slice(0, 3).join(', ')}.
               </p>
             </div>
 
@@ -209,7 +258,23 @@ export const MatchResultsScreen: React.FC<MatchResultsScreenProps> = ({
             </button>
           </div>
         </div>
+
+        {/* Official Source Attribution */}
+        <div className="text-xs text-[#73787a] flex items-center justify-between flex-wrap gap-2 border-t border-[#e3e2e0] pt-4">
+          <div className="flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-[18px] text-[#004349]">
+              verified
+            </span>
+            <span>
+              Official SingStat Source: Singapore Department of Statistics (DOS), Table TS/M810771
+            </span>
+          </div>
+          <span>
+            Singapore Residents By Planning Region, Age Group And Sex
+          </span>
+        </div>
       </div>
     </div>
   );
 };
+

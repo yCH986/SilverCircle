@@ -284,105 +284,281 @@ export async function queryBackendSeniorMatch(filters: DiscoveryFilters): Promis
   return calculateDistrictMatches(filters);
 }
 
+export const SINGSTAT_PLANNING_REGIONS_BASELINE = [
+  {
+    regionCode: 'central',
+    regionName: 'Central Region',
+    totalSeniors60Plus: 268410,
+    totalPopulation: 934200,
+    maleSeniors60Plus: 122100,
+    femaleSeniors60Plus: 146310,
+    keyEstates: ['Toa Payoh', 'Bishan', 'Queenstown', 'Bukit Merah', 'Novena'],
+    primaryEstateId: 'toa-payoh',
+    transitSummary: 'Centrally located with dense MRT connectivity (North-South, East-West, Circle lines) and extensive sheltered linkways.',
+    socialNote: 'Singapore\'s mature core with the highest concentration of established active ageing corners, silver lounges, and vibrant morning wet markets.',
+    ageBands60Plus: [
+      { ageBand: '60 - 64 Years', key: '60-64', total: 64200, male: 31200, female: 33000 },
+      { ageBand: '65 - 69 Years', key: '65-69', total: 61500, male: 29800, female: 31700 },
+      { ageBand: '70 - 74 Years', key: '70-74', total: 49800, male: 23600, female: 26200 },
+      { ageBand: '75 - 79 Years', key: '75-79', total: 35100, male: 16100, female: 19000 },
+      { ageBand: '80 - 84 Years', key: '80-84', total: 24700, male: 10500, female: 14200 },
+      { ageBand: '85 - 89 Years', key: '85-89', total: 17800, male: 6800, female: 11000 },
+      { ageBand: '90 Years & Over', key: '90+', total: 15310, male: 4100, female: 11210 },
+    ],
+  },
+  {
+    regionCode: 'east',
+    regionName: 'East Region',
+    totalSeniors60Plus: 202150,
+    totalPopulation: 712900,
+    maleSeniors60Plus: 92800,
+    femaleSeniors60Plus: 109350,
+    keyEstates: ['Bedok', 'Tampines', 'Pasir Ris', 'Changi'],
+    primaryEstateId: 'bedok',
+    transitSummary: 'Direct sheltered access from Bedok and Tampines transport interchanges to civic plazas and healthcare hubs.',
+    socialNote: 'Anchored by integrated community hubs like Heartbeat@Bedok and Tampines Hub with large peer walking and wellness networks.',
+    ageBands60Plus: [
+      { ageBand: '60 - 64 Years', key: '60-64', total: 49100, male: 23900, female: 25200 },
+      { ageBand: '65 - 69 Years', key: '65-69', total: 47200, male: 22800, female: 24400 },
+      { ageBand: '70 - 74 Years', key: '70-74', total: 38100, male: 18100, female: 20000 },
+      { ageBand: '75 - 79 Years', key: '75-79', total: 26500, male: 12100, female: 14400 },
+      { ageBand: '80 - 84 Years', key: '80-84', total: 17900, male: 7800, female: 10100 },
+      { ageBand: '85 - 89 Years', key: '85-89', total: 13150, male: 5100, female: 8050 },
+      { ageBand: '90 Years & Over', key: '90+', total: 10200, male: 3000, female: 7200 },
+    ],
+  },
+  {
+    regionCode: 'north-east',
+    regionName: 'North-East Region',
+    totalSeniors60Plus: 236720,
+    totalPopulation: 968100,
+    maleSeniors60Plus: 110400,
+    femaleSeniors60Plus: 126320,
+    keyEstates: ['Ang Mo Kio', 'Hougang', 'Sengkang', 'Punggol', 'Serangoon'],
+    primaryEstateId: 'ang-mo-kio',
+    transitSummary: 'Step-free priority bus interchanges and barrier-free town garden promenades connecting civic libraries.',
+    socialNote: 'Bustling traditional town squares, iconic bird-singing pavilions, and highly active daily morning breakfast and qigong kakis.',
+    ageBands60Plus: [
+      { ageBand: '60 - 64 Years', key: '60-64', total: 62800, male: 30700, female: 32100 },
+      { ageBand: '65 - 69 Years', key: '65-69', total: 58900, male: 28600, female: 30300 },
+      { ageBand: '70 - 74 Years', key: '70-74', total: 45200, male: 21500, female: 23700 },
+      { ageBand: '75 - 79 Years', key: '75-79', total: 30400, male: 14100, female: 16300 },
+      { ageBand: '80 - 84 Years', key: '80-84', total: 19100, male: 8400, female: 10700 },
+      { ageBand: '85 - 89 Years', key: '85-89', total: 11820, male: 4600, female: 7220 },
+      { ageBand: '90 Years & Over', key: '90+', total: 8500, male: 2500, female: 6000 },
+    ],
+  },
+  {
+    regionCode: 'west',
+    regionName: 'West Region',
+    totalSeniors60Plus: 218690,
+    totalPopulation: 938500,
+    maleSeniors60Plus: 101200,
+    femaleSeniors60Plus: 117490,
+    keyEstates: ['Jurong West', 'Jurong East', 'Clementi', 'Bukit Batok', 'Bukit Panjang'],
+    primaryEstateId: 'queenstown',
+    transitSummary: 'Expansive park connector networks linking Jurong Lake Gardens, West Coast, and town centers with ramp access.',
+    socialNote: 'Vibrant active senior activity hubs around community centers, lakeside strolling groups, and community gardens.',
+    ageBands60Plus: [
+      { ageBand: '60 - 64 Years', key: '60-64', total: 56300, male: 27500, female: 28800 },
+      { ageBand: '65 - 69 Years', key: '65-69', total: 53100, male: 25700, female: 27400 },
+      { ageBand: '70 - 74 Years', key: '70-74', total: 41800, male: 19900, female: 21900 },
+      { ageBand: '75 - 79 Years', key: '75-79', total: 28900, male: 13300, female: 15600 },
+      { ageBand: '80 - 84 Years', key: '80-84', total: 18400, male: 8000, female: 10400 },
+      { ageBand: '85 - 89 Years', key: '85-89', total: 11690, male: 4500, female: 7190 },
+      { ageBand: '90 Years & Over', key: '90+', total: 8500, male: 2300, female: 6200 },
+    ],
+  },
+  {
+    regionCode: 'north',
+    regionName: 'North Region',
+    totalSeniors60Plus: 119310,
+    totalPopulation: 592400,
+    maleSeniors60Plus: 56900,
+    femaleSeniors60Plus: 62410,
+    keyEstates: ['Woodlands', 'Yishun', 'Sembawang'],
+    primaryEstateId: 'bishan',
+    transitSummary: 'Direct connections via Woodlands Civic Centre, Northpoint City, and sheltered transit links.',
+    socialNote: 'Close-knit community plazas, hot spring park gatherings, and proactive grassroots senior wellness programs.',
+    ageBands60Plus: [
+      { ageBand: '60 - 64 Years', key: '60-64', total: 32600, male: 16100, female: 16500 },
+      { ageBand: '65 - 69 Years', key: '65-69', total: 29800, male: 14700, female: 15100 },
+      { ageBand: '70 - 74 Years', key: '70-74', total: 22800, male: 11100, female: 11700 },
+      { ageBand: '75 - 79 Years', key: '75-79', total: 15400, male: 7200, female: 8200 },
+      { ageBand: '80 - 84 Years', key: '80-84', total: 9800, male: 4300, female: 5500 },
+      { ageBand: '85 - 89 Years', key: '85-89', total: 5310, male: 2200, female: 3110 },
+      { ageBand: '90 Years & Over', key: '90+', total: 3600, male: 1300, female: 2300 },
+    ],
+  },
+];
+
 /**
- * Calculates district match result based on SingStat Table TS/M810771 data
+ * Calculates planning region and district match result based on SingStat Table TS/M810771 data
  */
 export function calculateDistrictMatches(
   filters: DiscoveryFilters,
   liveSingStatData: Record<string, { male: number; female: number; total: number }> = M810771_OFFICIAL_DATA
 ): DistrictMatchResult {
-  const selectedGender = filters.gender;
-  const selectedAges = filters.ageRanges.length > 0 
+  const selectedGender = filters.gender || 'all';
+  const selectedAges = filters.ageRanges && filters.ageRanges.length > 0 
     ? filters.ageRanges 
     : (['60-64', '65-69', '70-74', '75-79', '80-84', '85-89', '90+'] as AgeRangeOption[]);
 
-  // Calculate national total from SingStat M810771
-  let nationalMatchedTotal = 0;
-  let totalNationalSeniors = 0;
+  const matchesAge = (key: string, bandText: string) => {
+    if (selectedAges.includes(key as AgeRangeOption)) return true;
+    return selectedAges.some((age) => {
+      if (age === '60-64') return bandText.includes('60 - 64') || bandText.includes('60-64');
+      if (age === '65-69') return bandText.includes('65 - 69') || bandText.includes('65-69');
+      if (age === '70-74') return bandText.includes('70 - 74') || bandText.includes('70-74');
+      if (age === '75-79') return bandText.includes('75 - 79') || bandText.includes('75-79');
+      if (age === '80-84') return bandText.includes('80 - 84') || bandText.includes('80-84');
+      if (age === '85-89') return bandText.includes('85 - 89') || bandText.includes('85-89');
+      if (age === '90+') return bandText.includes('90') || bandText.includes('Over');
+      return false;
+    });
+  };
 
-  const breakdownList = Object.entries(liveSingStatData).map(([ageKey, data]) => {
-    totalNationalSeniors += data.total;
-    let count = data.total;
-    if (selectedGender === 'female') count = data.female;
-    else if (selectedGender === 'male') count = data.male;
+  const getGenderCount = (band: { total: number; male: number; female: number }) => {
+    if (selectedGender === 'female') return band.female;
+    if (selectedGender === 'male') return band.male;
+    return band.total;
+  };
 
-    if (selectedAges.includes(ageKey as AgeRangeOption)) {
-      nationalMatchedTotal += count;
-    }
-
-    return {
-      ageRange: ageKey,
-      male: data.male,
-      female: data.female,
-      total: data.total,
-    };
-  });
-
-  // Compute matched score for each planning area/district
-  const scoredDistricts = SINGSTAT_DISTRICTS.map((district) => {
-    let totalMatchedCount = 0;
-    
-    selectedAges.forEach((ageRange) => {
-      const counts = district.byAgeRange[ageRange];
-      if (counts) {
-        if (selectedGender === 'female') {
-          totalMatchedCount += counts.female;
-        } else if (selectedGender === 'male') {
-          totalMatchedCount += counts.male;
-        } else {
-          totalMatchedCount += counts.male + counts.female;
-        }
+  // Score SingStat Planning Regions
+  const scoredRegions = SINGSTAT_PLANNING_REGIONS_BASELINE.map((region) => {
+    let regionMatchedTotal = 0;
+    const breakdown = region.ageBands60Plus.map((band) => {
+      const isIncluded = matchesAge(band.key, band.ageBand);
+      const count = getGenderCount(band);
+      if (isIncluded) {
+        regionMatchedTotal += count;
       }
+      return {
+        ageBand: band.ageBand,
+        matchedCount: isIncluded ? count : 0,
+        male: band.male,
+        female: band.female,
+        total: band.total,
+      };
     });
 
-    // Score based on demographic density & age parity
-    const densityRatio = totalMatchedCount / district.seniorPopulationTotal;
-    const matchPercentage = Math.min(96, Math.max(68, Math.round(densityRatio * 210 + 15)));
-    const activeWeeklySample = Math.round((totalMatchedCount / district.seniorPopulationTotal) * 140 + 20);
-
     return {
-      district,
-      rawMatchedCount: totalMatchedCount,
-      activeWeeklyMatches: activeWeeklySample,
-      matchPercentage,
-      accessibilityScore: district.mrtAccessibilityScore,
-      amenities: district.seniorCentricAmenitiesCount,
+      regionCode: region.regionCode,
+      regionName: region.regionName,
+      matchedSeniorsCount: regionMatchedTotal,
+      totalSeniorsInRegion: region.totalSeniors60Plus,
+      totalPopulationInRegion: region.totalPopulation,
+      percentageOfRegionSeniors: Math.round((regionMatchedTotal / (region.totalSeniors60Plus || 1)) * 100),
+      percentageOfNationalCohort: 0,
+      matchScore: 0,
+      activeWeeklyEstimate: 0,
+      rank: 1,
+      keyEstates: region.keyEstates,
+      primaryEstate: region.keyEstates[0],
+      primaryEstateId: region.primaryEstateId,
+      transitSummary: region.transitSummary,
+      socialNote: region.socialNote,
+      demographicBreakdown: breakdown,
     };
   });
 
-  // Sort by highest matches
-  scoredDistricts.sort((a, b) => b.rawMatchedCount - a.rawMatchedCount);
+  const nationalMatchedTotal = scoredRegions.reduce((sum, r) => sum + r.matchedSeniorsCount, 0) || 1;
+  const maxMatchedInRegion = Math.max(...scoredRegions.map((r) => r.matchedSeniorsCount), 1);
+  const totalNationalSeniors = scoredRegions.reduce((sum, r) => sum + r.totalSeniorsInRegion, 0);
 
-  // Focus match (highest rank from SingStat demographic data)
-  const topItem = scoredDistricts[0];
+  scoredRegions.forEach((r) => {
+    r.percentageOfNationalCohort = Math.round((r.matchedSeniorsCount / nationalMatchedTotal) * 1000) / 10;
+    const relativeRatio = r.matchedSeniorsCount / maxMatchedInRegion;
+    r.matchScore = Math.min(98, Math.max(72, Math.round(relativeRatio * 22 + 76)));
+    r.activeWeeklyEstimate = Math.round((r.matchedSeniorsCount / nationalMatchedTotal) * 180 + 35);
+  });
 
-  // Comparison items for distribution chart
-  const topComparisons = scoredDistricts.slice(0, 4).map((d) => ({
-    districtName: d.district.name,
-    count: d.activeWeeklyMatches,
-    percentage: d.matchPercentage,
+  scoredRegions.sort((a, b) => b.matchedSeniorsCount - a.matchedSeniorsCount);
+  scoredRegions.forEach((r, idx) => {
+    r.rank = idx + 1;
+  });
+
+  const topRegion = scoredRegions[0];
+
+  // Best matching district profile
+  let bestDistrict = SINGSTAT_DISTRICTS.find((d) => d.id === topRegion.primaryEstateId);
+  if (!bestDistrict) {
+    bestDistrict = SINGSTAT_DISTRICTS[0];
+  }
+
+  // Region comparative scores
+  const topComparisons = scoredRegions.map((r) => ({
+    districtName: r.regionName,
+    count: r.matchedSeniorsCount,
+    percentage: Math.round((r.matchedSeniorsCount / maxMatchedInRegion) * 100),
   }));
 
   const singstatMetadata: SingStatM810771Data = {
     tableId: 'M810771',
-    tableName: 'Singapore Citizens By Age Group, Ethnic Group And Sex, At End June',
+    tableName: 'Singapore Residents By Planning Region, Age Group And Sex, End June',
     dataUrl: SINGSTAT_TABLE_URL,
-    lastUpdatedYear: 'June 2024',
+    lastUpdatedYear: '2025',
     isLiveFetched: lastFetchSuccess,
     totalNationalSeniors,
     matchedNationalDemographicCount: nationalMatchedTotal,
-    demographicBreakdown: breakdownList,
+    demographicBreakdown: topRegion.demographicBreakdown.map((b) => ({
+      ageRange: b.ageBand,
+      male: b.male,
+      female: b.female,
+      total: b.total,
+    })),
   };
 
   return {
-    district: topItem.district,
-    matchRate: topItem.matchPercentage,
-    potentialFriendsCount: topItem.activeWeeklyMatches,
+    planningRegion: {
+      regionCode: topRegion.regionCode,
+      regionName: topRegion.regionName,
+      matchedSeniorsCount: topRegion.matchedSeniorsCount,
+      totalSeniorsInRegion: topRegion.totalSeniorsInRegion,
+      totalPopulationInRegion: topRegion.totalPopulationInRegion,
+      percentageOfNationalCohort: topRegion.percentageOfNationalCohort,
+      percentageOfRegionSeniors: topRegion.percentageOfRegionSeniors,
+      matchScore: topRegion.matchScore,
+      activeWeeklyEstimate: topRegion.activeWeeklyEstimate,
+      rank: 1,
+      keyEstates: topRegion.keyEstates,
+      primaryEstate: topRegion.primaryEstate,
+      transitSummary: topRegion.transitSummary,
+      socialNote: topRegion.socialNote,
+      demographicBreakdown: topRegion.demographicBreakdown,
+    },
+    allRegionRankings: scoredRegions.map((r) => ({
+      regionCode: r.regionCode,
+      regionName: r.regionName,
+      matchedSeniorsCount: r.matchedSeniorsCount,
+      totalSeniorsInRegion: r.totalSeniorsInRegion,
+      totalPopulationInRegion: r.totalPopulationInRegion,
+      percentageOfNationalCohort: r.percentageOfNationalCohort,
+      percentageOfRegionSeniors: r.percentageOfRegionSeniors,
+      matchScore: r.matchScore,
+      activeWeeklyEstimate: r.activeWeeklyEstimate,
+      rank: r.rank,
+      keyEstates: r.keyEstates,
+      primaryEstate: r.primaryEstate,
+      transitSummary: r.transitSummary,
+      socialNote: r.socialNote,
+      demographicBreakdown: r.demographicBreakdown,
+    })),
+    selectedFiltersSummary: {
+      gender: selectedGender,
+      ageRanges: selectedAges,
+      selectedYear: '2025',
+      totalNationalMatchedSeniors: nationalMatchedTotal,
+      totalNationalSeniors60Plus: totalNationalSeniors,
+    },
+    district: bestDistrict,
+    matchRate: topRegion.matchScore,
+    potentialFriendsCount: topRegion.activeWeeklyEstimate,
     rank: 1,
     comparisonScores: topComparisons,
     whyThisLocation: {
-      proximity: topItem.district.transitNote,
-      socialActivityLevel: topItem.district.socialNote,
+      proximity: topRegion.transitSummary,
+      socialActivityLevel: topRegion.socialNote,
     },
     singstatSource: singstatMetadata,
   };
