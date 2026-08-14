@@ -377,14 +377,13 @@ export async function executeSeniorMatchLogic(query: SeniorMatchQuery) {
   });
 
   scoredDistricts.sort((a, b) => b.rawMatchedCount - a.rawMatchedCount);
-  const topMatch = scoredDistricts.find((d) => d.district.id === 'toa-payoh') || scoredDistricts[0];
+  const topMatch = scoredDistricts[0];
 
-  const comparisonScores = [
-    { districtName: 'Toa Payoh', count: topMatch.activeWeeklyMatches, percentage: topMatch.matchPercentage },
-    { districtName: 'Bishan', count: Math.round(topMatch.activeWeeklyMatches * 0.66), percentage: Math.round(topMatch.matchPercentage * 0.63) },
-    { districtName: 'Ang Mo Kio', count: Math.round(topMatch.activeWeeklyMatches * 0.52), percentage: Math.round(topMatch.matchPercentage * 0.46) },
-    { districtName: 'Bedok', count: Math.round(topMatch.activeWeeklyMatches * 0.46), percentage: Math.round(topMatch.matchPercentage * 0.43) },
-  ];
+  const comparisonScores = scoredDistricts.slice(0, 4).map((d) => ({
+    districtName: d.district.name,
+    count: d.activeWeeklyMatches,
+    percentage: d.matchPercentage,
+  }));
 
   return {
     district: topMatch.district,

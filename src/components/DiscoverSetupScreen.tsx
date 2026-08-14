@@ -42,7 +42,7 @@ export const DiscoverSetupScreen: React.FC<DiscoverSetupScreenProps> = ({
 
   const handleSelectAllAges = () => {
     if (filters.ageRanges.length === ageOptions.length) {
-      onUpdateFilters({ ageRanges: ['65-69', '70-74', '75-79'] });
+      onUpdateFilters({ ageRanges: [] });
     } else {
       onUpdateFilters({ ageRanges: [...ageOptions] });
     }

@@ -12,46 +12,46 @@ declare global {
 export const DisqusForum: React.FC = () => {
   useEffect(() => {
     // Configure Disqus parameters
-    window.disqus_config = function (this: { page: { url?: string; identifier?: string } }) {
-      try {
-        this.page.url = window.location.href.split('#')[0];
-        this.page.identifier = 'silvercircle-landing-forum';
-      } catch {
-        // Ignore iframe location access errors
-      }
-    };
-
-    const existingEmbed = document.querySelector('script[src="https://chloyee.disqus.com/embed.js"]');
-
-    if (window.DISQUS && existingEmbed) {
-      try {
-        window.DISQUS.reset({
-          reload: true,
-          config: window.disqus_config,
-        });
-      } catch {
-        // Ignore disqus reset error if container is refreshing
-      }
-    } else if (!existingEmbed) {
-      const s = document.createElement('script');
-      s.src = 'https://chloyee.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', (+new Date()).toString());
-      s.async = true;
-      s.onerror = (err) => {
-        console.warn('Disqus script load note:', err);
+    try {
+      window.disqus_config = function (this: { page: { url?: string; identifier?: string } }) {
+        try {
+          this.page.url = window.location.href.split('#')[0];
+          this.page.identifier = 'silvercircle-landing-forum';
+        } catch {
+          // Ignore location access restriction
+        }
       };
-      (document.head || document.body).appendChild(s);
-    }
 
-    // Add comments count script underneath
-    const existingCountScript = document.getElementById('dsq-count-scr');
-    if (!existingCountScript) {
-      const countScript = document.createElement('script');
-      countScript.id = 'dsq-count-scr';
-      countScript.src = 'https://chloyee.disqus.com/count.js';
-      countScript.async = true;
-      countScript.onerror = () => {};
-      document.body.appendChild(countScript);
+      const timer = setTimeout(() => {
+        try {
+          const existingEmbed = document.querySelector('script[src="https://chloyee.disqus.com/embed.js"]');
+
+          if (window.DISQUS && existingEmbed) {
+            try {
+              window.DISQUS.reset({
+                reload: true,
+                config: window.disqus_config,
+              });
+            } catch {
+              // Ignore disqus reset error
+            }
+          } else if (!existingEmbed) {
+            const s = document.createElement('script');
+            s.src = 'https://chloyee.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', (+new Date()).toString());
+            s.async = true;
+            s.crossOrigin = 'anonymous';
+            s.onerror = () => {};
+            (document.head || document.body).appendChild(s);
+          }
+        } catch {
+          // Ignore embed injection error
+        }
+      }, 50);
+
+      return () => clearTimeout(timer);
+    } catch {
+      // Ignore top-level setup errors
     }
   }, []);
 

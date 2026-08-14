@@ -22,15 +22,20 @@ export const HangoutSpotsScreen: React.FC<HangoutSpotsScreenProps> = ({
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [hoveredSpotId, setHoveredSpotId] = useState<string | null>(null);
 
+  // Priority sort: Show spots belonging to the matched district first
+  const districtMatchedSpots = spots.filter(s => s.district.toLowerCase().includes(districtName.toLowerCase()));
+  const otherDistrictSpots = spots.filter(s => !s.district.toLowerCase().includes(districtName.toLowerCase()));
+  const displayPool = districtMatchedSpots.length > 0 ? [...districtMatchedSpots, ...otherDistrictSpots] : spots;
+
   const filterCategories: { label: FilterCategory; icon: string; count: number }[] = [
-    { label: 'All', icon: 'apps', count: spots.length },
-    { label: 'Accessibility', icon: 'accessible', count: spots.filter(s => s.tags.includes('Level Access') || s.tags.includes('Elevator Access') || s.tags.includes('Paved Paths')).length },
-    { label: 'Low Trip Hazard', icon: 'do_not_step', count: spots.filter(s => s.tags.includes('Smooth Floors') || s.tags.includes('No Steps') || s.tags.includes('Low Trip Hazard')).length },
-    { label: 'Temperature', icon: 'ac_unit', count: spots.filter(s => s.tags.includes('Climate Controlled')).length },
-    { label: 'Social & Rest', icon: 'nature_people', count: spots.filter(s => s.tags.includes('Social Clubs') || s.tags.includes('Quiet Zone') || s.tags.includes('Rest Areas')).length },
+    { label: 'All', icon: 'apps', count: displayPool.length },
+    { label: 'Accessibility', icon: 'accessible', count: displayPool.filter(s => s.tags.includes('Level Access') || s.tags.includes('Elevator Access') || s.tags.includes('Paved Paths')).length },
+    { label: 'Low Trip Hazard', icon: 'do_not_step', count: displayPool.filter(s => s.tags.includes('Smooth Floors') || s.tags.includes('No Steps') || s.tags.includes('Low Trip Hazard')).length },
+    { label: 'Temperature', icon: 'ac_unit', count: displayPool.filter(s => s.tags.includes('Climate Controlled')).length },
+    { label: 'Social & Rest', icon: 'nature_people', count: displayPool.filter(s => s.tags.includes('Social Clubs') || s.tags.includes('Quiet Zone') || s.tags.includes('Rest Areas')).length },
   ];
 
-  const filteredSpots = spots.filter((spot) => {
+  const filteredSpots = displayPool.filter((spot) => {
     if (activeCategory === 'Accessibility') {
       return spot.tags.includes('Level Access') || spot.tags.includes('Elevator Access') || spot.tags.includes('Paved Paths');
     }
@@ -49,7 +54,7 @@ export const HangoutSpotsScreen: React.FC<HangoutSpotsScreenProps> = ({
     return true;
   });
 
-  const currentSelectedSpot = spots.find(s => s.id === selectedSpotId) || spots[0];
+  const currentSelectedSpot = displayPool.find(s => s.id === selectedSpotId) || displayPool[0];
 
   const mapBg = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAciYogn1k_4dMAuOwwWRQYqP0Q17y4Wd9Va0QcFHO8mnlAz6cOgURXZBGVrS1eGX9bZxQxFLU3iCHKFGC7EqUga6_0MbCmNECkFZUVOSHIS8lm2BOUP-0dkzqov7xhlWV-M856gSE5iIoq3h9BExwhmyf724CHczW6mo0C83vyRV9LWLdmYJiFFKuHE5QzG1hp7zzyIQLtpuB3fhSkdEHqJ7-L9mN6-ypEg01blDlYVtiHdrDGaMKc';
 

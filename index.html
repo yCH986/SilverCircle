@@ -4,18 +4,40 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
-      window.onerror = function (msg, url, line, col, error) {
-        if (typeof msg === 'string' && (msg.includes('Script error') || (url && url.includes('disqus')))) {
-          return true;
-        }
-      };
-      window.addEventListener('error', function (e) {
-        if (e.message === 'Script error.' || (e.filename && e.filename.includes('disqus'))) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          return true;
-        }
-      }, true);
+      (function() {
+        // Global handler to silence cross-origin script error events from third party scripts
+        window.onerror = function (msg, url, line, col, error) {
+          if (!msg || msg === 'Script error.' || (typeof msg === 'string' && msg.toLowerCase().indexOf('script error') !== -1)) {
+            return true;
+          }
+          if (url && (url.indexOf('disqus') !== -1 || url.indexOf('clarity') !== -1 || url.indexOf('doubleclick') !== -1 || url.indexOf('google') !== -1 || url.indexOf('adnxs') !== -1)) {
+            return true;
+          }
+          return false;
+        };
+
+        window.addEventListener('error', function (e) {
+          var msg = e.message || (e.error && e.error.message) || '';
+          var filename = e.filename || '';
+          if (msg === 'Script error.' || msg.toLowerCase().indexOf('script error') !== -1 || !filename || filename.indexOf('disqus') !== -1 || filename.indexOf('clarity') !== -1) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+
+        window.addEventListener('unhandledrejection', function (e) {
+          if (e) {
+            var reason = e.reason || '';
+            var reasonStr = (typeof reason === 'string' ? reason : (reason.message || '')).toLowerCase();
+            if (reasonStr.indexOf('script error') !== -1 || reasonStr.indexOf('disqus') !== -1 || reasonStr.indexOf('clarity') !== -1) {
+              e.preventDefault();
+              e.stopImmediatePropagation();
+              return true;
+            }
+          }
+        }, true);
+      })();
     </script>
     <script type="text/javascript">
       (function(c,l,a,r,i,t,y){

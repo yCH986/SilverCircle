@@ -81,26 +81,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               Learn More
             </button>
           </div>
-
-          {/* Quick Stats Grid */}
-          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-[920px] bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-md border border-[#e3e2e0]">
-            <div className="flex flex-col items-center text-center p-2">
-              <span className="font-headline font-bold text-3xl sm:text-4xl text-[#a73927]">500+</span>
-              <span className="text-[#3f484a] font-medium text-lg mt-1">Verified Spots</span>
-            </div>
-            <div className="flex flex-col items-center text-center p-2">
-              <span className="font-headline font-bold text-3xl sm:text-4xl text-[#a73927]">10k+</span>
-              <span className="text-[#3f484a] font-medium text-lg mt-1">Active Members</span>
-            </div>
-            <div className="flex flex-col items-center text-center p-2">
-              <span className="font-headline font-bold text-3xl sm:text-4xl text-[#a73927]">50+</span>
-              <span className="text-[#3f484a] font-medium text-lg mt-1">Singapore Districts</span>
-            </div>
-            <div className="flex flex-col items-center text-center p-2">
-              <span className="font-headline font-bold text-3xl sm:text-4xl text-[#a73927]">100%</span>
-              <span className="text-[#3f484a] font-medium text-lg mt-1">Accessible</span>
-            </div>
-          </div>
         </div>
       </section>
 

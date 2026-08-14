@@ -22,10 +22,10 @@ export function App() {
   const [isHighContrast, setIsHighContrast] = useState(false);
   const [isAudioGuideActive, setIsAudioGuideActive] = useState(false);
 
-  // Discovery Filters State (Initialized to match screenshot: Female, 65-69, 70-74, 75-79)
+  // Discovery Filters State (No pre-selected age range by default)
   const [filters, setFilters] = useState<DiscoveryFilters>({
     gender: 'female',
-    ageRanges: ['65-69', '70-74', '75-79'],
+    ageRanges: [],
   });
 
   // Dynamic Match Computation

@@ -353,16 +353,15 @@ export function calculateDistrictMatches(
   // Sort by highest matches
   scoredDistricts.sort((a, b) => b.rawMatchedCount - a.rawMatchedCount);
 
-  // Focus match
-  const topItem = scoredDistricts.find(d => d.district.id === 'toa-payoh') || scoredDistricts[0];
+  // Focus match (highest rank from SingStat demographic data)
+  const topItem = scoredDistricts[0];
 
   // Comparison items for distribution chart
-  const topComparisons = [
-    { districtName: 'Toa Payoh', count: topItem.activeWeeklyMatches, percentage: topItem.matchPercentage },
-    { districtName: 'Bishan', count: Math.round(topItem.activeWeeklyMatches * 0.66), percentage: Math.round(topItem.matchPercentage * 0.63) },
-    { districtName: 'Ang Mo Kio', count: Math.round(topItem.activeWeeklyMatches * 0.52), percentage: Math.round(topItem.matchPercentage * 0.46) },
-    { districtName: 'Bedok', count: Math.round(topItem.activeWeeklyMatches * 0.46), percentage: Math.round(topItem.matchPercentage * 0.43) },
-  ];
+  const topComparisons = scoredDistricts.slice(0, 4).map((d) => ({
+    districtName: d.district.name,
+    count: d.activeWeeklyMatches,
+    percentage: d.matchPercentage,
+  }));
 
   const singstatMetadata: SingStatM810771Data = {
     tableId: 'M810771',

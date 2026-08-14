@@ -1,6 +1,97 @@
 import { HangoutSpot } from '../types';
 
 export const HANGOUT_SPOTS: HangoutSpot[] = [
+  // Bedok Spots (Top Matched Planning Area for Female 60-64)
+  {
+    id: 'heartbeat-bedok-lounge',
+    name: 'Heartbeat@Bedok Active Ageing Lounge',
+    category: 'Wellness Hub',
+    district: 'Bedok',
+    address: '11 Bedok North Street 1, #01-08 Heartbeat Complex',
+    description: 'An integrated lifestyle hub with barrier-free access, gentle morning stretching classes, acoustic-friendly tea tables, and daily community gatherings.',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAe6T9_XtfBAaeuz-t9ufJmXX-sVHye-6XaLJ7waF8P1UTEuyGOguEDQ-PNeAqY-GSUGJexnoIW6MS3GqOqE9t-baR0UAfbo3Kkv8qjXwjwA56bF2NplhDulUtheJ-pg2LXmIQ2NNoVlG3VDCvwjlL13g0ecdkQh1vLn_e_CGCXMg2_UdUmm0xO0Fkb72Dgz6OHA40-E4iRe3TeOl7zJ1jXVi6t748yX0Z_vKnDmZNOdhk01z0rBhyh',
+    isCommunityFavorite: true,
+    isRecommended: true,
+    rating: 4.9,
+    reviewCount: 230,
+    tags: ['Level Access', 'Elevator Access', 'Climate Controlled', 'Social Clubs'],
+    criteriaScores: {
+      accessibility: 99,
+      lowTripHazard: 98,
+      temperatureControlled: 97,
+      seniorFriendlyActivities: 99,
+    },
+    openingHours: '8:00 AM – 8:00 PM Daily (Senior Circle 9:30 AM & 3:00 PM)',
+    transitSummary: 'Direct sheltered barrier-free link from Bedok MRT (Exit B) and Bus Interchange',
+    specialAmenities: [
+      'Automatic sliding entry with zero-threshold doorways',
+      'Ergonomic armchairs with firm lumbar cushioning',
+      'Free community hot water & tea dispenser corner',
+      'Spacious elevators with voice announcements and large tactile buttons',
+      'Regular complimentary health checkups & digital clinic'
+    ],
+    mapCoords: { x: 42, y: 38 }
+  },
+  {
+    id: 'bedok-reservoir-teahouse',
+    name: 'Bedok Reservoir Lakeside Teahouse',
+    category: 'Cafe',
+    district: 'Bedok',
+    address: '701 Bedok Reservoir Road, Deck 2 Waterfront',
+    description: 'A serene open-air sheltered cafe overlooking the calm waters of Bedok Reservoir with paved walking paths and shaded resting benches.',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAWPl1a8suDtaHhdRvwljIqKbxOHbGY9d3fkJhh6N46gEwA542Ase8TunuQt18s-BB8ZB6hQ0xoQhOhAB2f9kBa-XUUFaevgl2hKIZtrR4YBQTsX-UmRalkWHX_-zCNJYRvchF9vV_CoZgEnr6mh8aXq77cKhbyzqMyQjXqz0Qi6fxPaldgw5rTf7jv53HPcT4hg19wKXHrd2wFNVTCQtaJNYd5qzOP2_zuvjrDcjhU1KxLWBXtewA5',
+    isCommunityFavorite: true,
+    isRecommended: true,
+    rating: 4.8,
+    reviewCount: 165,
+    tags: ['Paved Paths', 'No Steps', 'Rest Areas', 'Low Trip Hazard'],
+    criteriaScores: {
+      accessibility: 96,
+      lowTripHazard: 95,
+      temperatureControlled: 90,
+      seniorFriendlyActivities: 94,
+    },
+    openingHours: '7:30 AM – 7:00 PM Daily',
+    transitSummary: '5-minute flat walk via sheltered ramp from Bedok Reservoir MRT (Exit A)',
+    specialAmenities: [
+      'Completely flat timber boardwalks with non-slip ridges',
+      'Low-sugar herbal teas, fresh steamed buns, and warm multigrain porridge',
+      'Wheelchair and mobility scooter charging point',
+      'Shaded scenic benches positioned every 40 meters along the water'
+    ],
+    mapCoords: { x: 68, y: 55 }
+  },
+  {
+    id: 'bedok-town-square-hub',
+    name: 'Bedok Town Square Silver Pavilion',
+    category: 'Community Club',
+    district: 'Bedok',
+    address: '208 New Upper Changi Road, Bedok Central',
+    description: 'A breezy, high-roof community plaza featuring chess tables, daily morning qigong circles, and convenient adjoining bakeries.',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDWpdlU921NrJ0-mGzIupzhs65hujEunzyCDoFJZWK-Yr33uPBQeHxgUStI-Ar4MKSdiqQ3p7wXBGHPlvtvWlb8sCBSlquCazzEhmNrHsqD4I_asc90KFTc7p68QfaW_SYZgYZSHJk0jCIfUGrhx7JuoTDA2mQGhtEBN9wUeGGpt96oPNrxy-B3tKurf-pyGJKiZXNYt9PiFCc0bG_v57XtJ4Kan60XxOIjVsKMCf_KiCubZLssTqYS',
+    isCommunityFavorite: false,
+    isRecommended: true,
+    rating: 4.8,
+    reviewCount: 198,
+    tags: ['Level Access', 'Smooth Floors', 'Rest Areas', 'Social Clubs'],
+    criteriaScores: {
+      accessibility: 97,
+      lowTripHazard: 96,
+      temperatureControlled: 89,
+      seniorFriendlyActivities: 97,
+    },
+    openingHours: '6:30 AM – 9:30 PM Daily',
+    transitSummary: 'Direct ground level access adjacent to Bedok Mall & Interchange',
+    specialAmenities: [
+      'Generous barrier-free public seating with sturdy support handles',
+      'Large high-volume low-speed overhead fans for constant ventilation',
+      'Senior-friendly washrooms with emergency pull cords',
+      'Nearby traditional kopi stalls with step-free ordering counters'
+    ],
+    mapCoords: { x: 35, y: 65 }
+  },
+
+  // Toa Payoh Spots
   {
     id: 'oakwood-cafe',
     name: 'Oakwood Conservatory Cafe',
@@ -148,5 +239,66 @@ export const HANGOUT_SPOTS: HangoutSpot[] = [
       'Communal pantry with complimentary hot barley and green tea'
     ],
     mapCoords: { x: 50, y: 60 }
+  },
+
+  // Ang Mo Kio Spots
+  {
+    id: 'amk-silver-botanics',
+    name: 'Ang Mo Kio Town Garden West Garden Pavilion',
+    category: 'Park & Garden',
+    district: 'Ang Mo Kio',
+    address: 'Opposite Ang Mo Kio Public Library, Ave 6',
+    description: 'A quiet landscaped garden pavilion with level footpaths, tranquil lotus ponds, and organized daily senior morning walks.',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBA0ptKVqgp74r7ZALzK068smxZb1GsfLc2TQ7PP3IN2BdFMCPQeL_KaB2c94oxe9KGWkTias4pEVY8CStXMECx48YnTR-QhNRqFgKqfCf7LV81I3yqsfAWio85ftJYuuXt-_CLzMBZE9KwuAnjPSUQaI8WFTC1-ZYnW9fSr-OCsl47uHnFTzXZp7jP0E3PT26rdzyhIRDcMfezTEgm8n1YipFuzBGaIkgTnlZOkck_6zLpYXqlcZqW',
+    isCommunityFavorite: false,
+    isRecommended: true,
+    rating: 4.8,
+    reviewCount: 145,
+    tags: ['Paved Paths', 'Rest Areas', 'No Steps', 'Quiet Zone'],
+    criteriaScores: {
+      accessibility: 95,
+      lowTripHazard: 94,
+      temperatureControlled: 88,
+      seniorFriendlyActivities: 96,
+    },
+    openingHours: '6:00 AM – 10:00 PM Daily',
+    transitSummary: 'Fully covered walkway from Ang Mo Kio MRT Station (Exit B)',
+    specialAmenities: [
+      'Wide tarmac walkways accommodating walking frames',
+      'Rest alcoves with backrests and arm supports',
+      'Braille signage along botanical trail'
+    ],
+    mapCoords: { x: 55, y: 45 }
+  },
+
+  // Queenstown Spots
+  {
+    id: 'queenstown-wellness-haven',
+    name: 'Queenstown Silver Health Pavilion',
+    category: 'Wellness Hub',
+    district: 'Queenstown',
+    address: '100 Strathmore Avenue, Health District Hub',
+    description: 'Pioneering health district hub featuring therapeutic sensory gardens, low-impact exercise machines, and daily peer coffee hours.',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAe6T9_XtfBAaeuz-t9ufJmXX-sVHye-6XaLJ7waF8P1UTEuyGOguEDQ-PNeAqY-GSUGJexnoIW6MS3GqOqE9t-baR0UAfbo3Kkv8qjXwjwA56bF2NplhDulUtheJ-pg2LXmIQ2NNoVlG3VDCvwjlL13g0ecdkQh1vLn_e_CGCXMg2_UdUmm0xO0Fkb72Dgz6OHA40-E4iRe3TeOl7zJ1jXVi6t748yX0Z_vKnDmZNOdhk01z0rBhyh',
+    isCommunityFavorite: true,
+    isRecommended: true,
+    rating: 4.9,
+    reviewCount: 172,
+    tags: ['Level Access', 'Social Clubs', 'Climate Controlled', 'Smooth Floors'],
+    criteriaScores: {
+      accessibility: 98,
+      lowTripHazard: 97,
+      temperatureControlled: 95,
+      seniorFriendlyActivities: 98,
+    },
+    openingHours: '8:00 AM – 7:00 PM (Monday to Saturday)',
+    transitSummary: 'Sheltered linkway with gentle gradient from Queenstown MRT',
+    specialAmenities: [
+      'Wheelchair friendly raised herb beds',
+      'Dedicated health consultation room for seniors',
+      'Free warm chamomile and ginger tea'
+    ],
+    mapCoords: { x: 40, y: 70 }
   }
 ];
+
