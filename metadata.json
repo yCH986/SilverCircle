@@ -1,0 +1,7 @@
+{
+  "name": "SilverCircle",
+  "description": "Accessible senior discovery and social connection platform connecting seniors with peer communities and vetted hangout spots across Singapore districts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

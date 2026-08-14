@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: #004349;
+    --primary-container: #0d5c63;
+    --on-primary-container: #90d2da;
+    --primary-fixed: #abeef6;
+    --primary-fixed-dim: #8fd1d9;
+    --on-primary-fixed: #002023;
+    
+    --secondary: #a73927;
+    --secondary-container: #fd7861;
+    --on-secondary-container: #701104;
+    --secondary-fixed: #ffdad4;
+    --secondary-fixed-dim: #ffb4a6;
+    
+    --tertiary: #124157;
+    --tertiary-container: #2e586f;
+    --on-tertiary-container: #a3cde8;
+    --tertiary-fixed: #c5e7ff;
+    --tertiary-fixed-dim: #a2cce7;
+
+    --background: #faf9f7;
+    --surface: #faf9f7;
+    --surface-container-lowest: #ffffff;
+    --surface-container-low: #f4f3f1;
+    --surface-container: #efeeec;
+    --surface-container-high: #e9e8e6;
+    --surface-container-highest: #e3e2e0;
+    --surface-variant: #e3e2e0;
+    --on-surface: #1a1c1b;
+    --on-surface-variant: #3f484a;
+    --outline: #6f797a;
+    --outline-variant: #bfc8c9;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #faf9f7;
+    color: #1a1c1b;
+    font-family: 'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Custom high readability scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #efeeec;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #bfc8c9;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6f797a;
+  }
+}
+
+.font-headline {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+.font-body {
+  font-family: 'Atkinson Hyperlegible Next', system-ui, sans-serif;
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
+
+/* Accessible focus outline */
+*:focus-visible {
+  outline: 3px solid #004349;
+  outline-offset: 2px;
+}
