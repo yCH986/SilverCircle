@@ -49,10 +49,10 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         {/* Primary Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8 lg:gap-10" aria-label="Main Navigation">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8" aria-label="Main Navigation">
           <button
             onClick={() => onNavigate('home')}
-            className={`transition-all py-2 text-lg font-semibold cursor-pointer ${
+            className={`transition-all py-2 text-base lg:text-lg font-semibold cursor-pointer ${
               currentScreen === 'home'
                 ? 'text-[#004349] font-bold border-b-2 border-[#004349]'
                 : 'text-[#3f484a] hover:text-[#004349]'
@@ -63,7 +63,7 @@ export const Header: React.FC<HeaderProps> = ({
           
           <button
             onClick={() => onNavigate('discover')}
-            className={`transition-all py-2 text-lg font-semibold cursor-pointer ${
+            className={`transition-all py-2 text-base lg:text-lg font-semibold cursor-pointer ${
               currentScreen === 'discover' || currentScreen === 'results'
                 ? 'text-[#004349] font-bold border-b-2 border-[#004349]'
                 : 'text-[#3f484a] hover:text-[#004349]'
@@ -74,7 +74,7 @@ export const Header: React.FC<HeaderProps> = ({
           
           <button
             onClick={() => onNavigate('hangout-spots')}
-            className={`transition-all py-2 text-lg font-semibold cursor-pointer ${
+            className={`transition-all py-2 text-base lg:text-lg font-semibold cursor-pointer ${
               currentScreen === 'hangout-spots'
                 ? 'text-[#004349] font-bold border-b-2 border-[#004349]'
                 : 'text-[#3f484a] hover:text-[#004349]'
@@ -84,8 +84,23 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           <button
+            onClick={() => {
+              if (currentScreen !== 'home') {
+                onNavigate('home');
+              }
+              setTimeout(() => {
+                const el = document.getElementById('community-forum');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            }}
+            className="transition-all py-2 text-base lg:text-lg font-semibold text-[#3f484a] hover:text-[#004349] cursor-pointer"
+          >
+            Forum & Comments
+          </button>
+
+          <button
             onClick={() => onNavigate('about-us')}
-            className={`transition-all py-2 text-lg font-semibold cursor-pointer ${
+            className={`transition-all py-2 text-base lg:text-lg font-semibold cursor-pointer ${
               currentScreen === 'about-us'
                 ? 'text-[#004349] font-bold border-b-2 border-[#004349]'
                 : 'text-[#3f484a] hover:text-[#004349]'
@@ -136,10 +151,10 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Mobile Sub Navigation Bar */}
-      <div className="md:hidden flex items-center justify-around bg-[#efeeec] border-t border-[#e3e2e0] px-2 py-1.5 text-sm font-semibold">
+      <div className="md:hidden flex items-center justify-around bg-[#efeeec] border-t border-[#e3e2e0] px-2 py-1.5 text-xs sm:text-sm font-semibold overflow-x-auto">
         <button
           onClick={() => onNavigate('home')}
-          className={`px-3 py-1 rounded-full ${
+          className={`px-2.5 py-1 rounded-full whitespace-nowrap ${
             currentScreen === 'home' ? 'bg-[#004349] text-white' : 'text-[#3f484a]'
           }`}
         >
@@ -147,7 +162,7 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
         <button
           onClick={() => onNavigate('discover')}
-          className={`px-3 py-1 rounded-full ${
+          className={`px-2.5 py-1 rounded-full whitespace-nowrap ${
             currentScreen === 'discover' || currentScreen === 'results' ? 'bg-[#004349] text-white' : 'text-[#3f484a]'
           }`}
         >
@@ -155,15 +170,29 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
         <button
           onClick={() => onNavigate('hangout-spots')}
-          className={`px-3 py-1 rounded-full ${
+          className={`px-2.5 py-1 rounded-full whitespace-nowrap ${
             currentScreen === 'hangout-spots' ? 'bg-[#004349] text-white' : 'text-[#3f484a]'
           }`}
         >
           Hangouts
         </button>
         <button
+          onClick={() => {
+            if (currentScreen !== 'home') {
+              onNavigate('home');
+            }
+            setTimeout(() => {
+              const el = document.getElementById('community-forum');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+          }}
+          className="px-2.5 py-1 rounded-full whitespace-nowrap text-[#3f484a]"
+        >
+          Forum
+        </button>
+        <button
           onClick={() => onNavigate('about-us')}
-          className={`px-3 py-1 rounded-full ${
+          className={`px-2.5 py-1 rounded-full whitespace-nowrap ${
             currentScreen === 'about-us' ? 'bg-[#004349] text-white' : 'text-[#3f484a]'
           }`}
         >

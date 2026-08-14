@@ -42,6 +42,19 @@ export const Footer: React.FC<FooterProps> = ({
           </button>
           
           <button
+            onClick={() => {
+              onNavigate('home');
+              setTimeout(() => {
+                const el = document.getElementById('community-forum');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            }}
+            className="font-semibold text-base text-[#3f484a] hover:text-[#a73927] transition-colors underline underline-offset-4 cursor-pointer"
+          >
+            Community Forum
+          </button>
+
+          <button
             onClick={() => onNavigate('about-us')}
             className="font-semibold text-base text-[#3f484a] hover:text-[#a73927] transition-colors underline underline-offset-4 cursor-pointer"
           >

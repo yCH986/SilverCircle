@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HangoutSpot } from '../types';
 
 interface SpotDetailModalProps {
@@ -8,6 +8,40 @@ interface SpotDetailModalProps {
   onToggleFavorite: (spotId: string) => void;
 }
 
+interface SpotReview {
+  id: string;
+  author: string;
+  rating: number;
+  comment: string;
+  timestamp: string;
+  tags: string[];
+  helpfulCount: number;
+  hasMarkedHelpful?: boolean;
+}
+
+const DEFAULT_SPOT_REVIEWS: Record<string, SpotReview[]> = {
+  default: [
+    {
+      id: 'rev-1',
+      author: 'Mdm Alice Tan (Age 68)',
+      rating: 5,
+      comment: 'Very easy to access with my walking cane. The air conditioning is not too cold and there are wide armchairs near the entrance.',
+      timestamp: '3 days ago',
+      tags: ['Wheelchair Friendly', 'Comfortable Seating'],
+      helpfulCount: 14,
+    },
+    {
+      id: 'rev-2',
+      author: 'Uncle David Lee (Age 74)',
+      rating: 5,
+      comment: 'Very friendly staff. Public toilets are very clean with sturdy handrails and no wet steps. Great for morning coffee with friends.',
+      timestamp: '1 week ago',
+      tags: ['Clean Toilets', 'Quiet Atmosphere'],
+      helpfulCount: 9,
+    },
+  ],
+};
+
 export const SpotDetailModal: React.FC<SpotDetailModalProps> = ({
   spot,
   onClose,
@@ -16,6 +50,29 @@ export const SpotDetailModal: React.FC<SpotDetailModalProps> = ({
 }) => {
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [copiedInvite, setCopiedInvite] = useState(false);
+
+  // Reviews state
+  const [reviews, setReviews] = useState<SpotReview[]>([]);
+  const [isAddingReview, setIsAddingReview] = useState(false);
+  const [newReviewAuthor, setNewReviewAuthor] = useState('');
+  const [newReviewRating, setNewReviewRating] = useState(5);
+  const [newReviewComment, setNewReviewComment] = useState('');
+  const [newReviewTag, setNewReviewTag] = useState('Step-Free Access');
+
+  useEffect(() => {
+    if (!spot) return;
+    try {
+      const storageKey = `silvercircle_spot_reviews_${spot.id}`;
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        setReviews(JSON.parse(saved));
+      } else {
+        setReviews(DEFAULT_SPOT_REVIEWS[spot.id] || DEFAULT_SPOT_REVIEWS.default);
+      }
+    } catch {
+      setReviews(DEFAULT_SPOT_REVIEWS.default);
+    }
+  }, [spot]);
 
   if (!spot) return null;
 
@@ -34,7 +91,7 @@ export const SpotDetailModal: React.FC<SpotDetailModalProps> = ({
     const textToRead = `${spot.name} in ${spot.district}. ${spot.description}. Located at ${spot.address}. ${spot.transitSummary}. Special amenities include: ${spot.specialAmenities.join('. ')}. Opening hours: ${spot.openingHours}.`;
     
     const utterance = new SpeechSynthesisUtterance(textToRead);
-    utterance.rate = 0.9; // Slightly slower, clear voice for seniors
+    utterance.rate = 0.9;
     utterance.pitch = 1.0;
     
     utterance.onend = () => setIsPlayingAudio(false);
@@ -53,6 +110,54 @@ export const SpotDetailModal: React.FC<SpotDetailModalProps> = ({
       setCopiedInvite(true);
       setTimeout(() => setCopiedInvite(false), 3000);
     }
+  };
+
+  const handleHelpful = (reviewId: string) => {
+    const updated = reviews.map((r) => {
+      if (r.id === reviewId) {
+        const hasMarkedHelpful = !r.hasMarkedHelpful;
+        return {
+          ...r,
+          hasMarkedHelpful,
+          helpfulCount: hasMarkedHelpful ? r.helpfulCount + 1 : Math.max(0, r.helpfulCount - 1),
+        };
+      }
+      return r;
+    });
+    setReviews(updated);
+    try {
+      localStorage.setItem(`silvercircle_spot_reviews_${spot.id}`, JSON.stringify(updated));
+    } catch {
+      // Ignore
+    }
+  };
+
+  const handleAddReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newReviewComment.trim()) return;
+
+    const newRev: SpotReview = {
+      id: `rev-${Date.now()}`,
+      author: newReviewAuthor.trim() || 'Senior Kaki',
+      rating: newReviewRating,
+      comment: newReviewComment.trim(),
+      timestamp: 'Just now',
+      tags: [newReviewTag],
+      helpfulCount: 1,
+      hasMarkedHelpful: true,
+    };
+
+    const updated = [newRev, ...reviews];
+    setReviews(updated);
+    try {
+      localStorage.setItem(`silvercircle_spot_reviews_${spot.id}`, JSON.stringify(updated));
+    } catch {
+      // Ignore
+    }
+
+    setNewReviewComment('');
+    setNewReviewAuthor('');
+    setIsAddingReview(false);
   };
 
   return (
@@ -113,7 +218,7 @@ export const SpotDetailModal: React.FC<SpotDetailModalProps> = ({
               <span className="material-symbols-outlined text-[#ffdad4] text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>
                 star
               </span>
-              <span>{spot.rating} ({spot.reviewCount} verified senior reviews)</span>
+              <span>{spot.rating} ({spot.reviewCount + reviews.length - 2} verified senior reviews)</span>
             </div>
           </div>
         </div>
@@ -266,6 +371,127 @@ export const SpotDetailModal: React.FC<SpotDetailModalProps> = ({
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Senior Community Reviews & Tips Section */}
+          <div className="bg-[#faf9f7] p-6 rounded-2xl border border-[#e3e2e0] flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#004349] text-[24px]">reviews</span>
+                <h3 className="font-headline font-bold text-xl text-[#1a1c1b]">
+                  Senior Community Tips & Reviews
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAddingReview(!isAddingReview)}
+                className="px-3 py-1.5 bg-[#004349] hover:bg-[#0d5c63] text-white text-xs font-bold rounded-lg cursor-pointer transition-colors"
+              >
+                {isAddingReview ? 'Cancel' : '+ Add Your Tip'}
+              </button>
+            </div>
+
+            {/* Add Review Form */}
+            {isAddingReview && (
+              <form onSubmit={handleAddReview} className="bg-white p-4 rounded-xl border border-[#004349] flex flex-col gap-3 animate-fade-in">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <input
+                    type="text"
+                    value={newReviewAuthor}
+                    onChange={(e) => setNewReviewAuthor(e.target.value)}
+                    placeholder="Your Name (e.g. Auntie Janet)"
+                    className="px-3 py-2 bg-[#faf9f7] border border-[#e3e2e0] rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#004349]"
+                  />
+                  <select
+                    value={newReviewRating}
+                    onChange={(e) => setNewReviewRating(Number(e.target.value))}
+                    className="px-3 py-2 bg-[#faf9f7] border border-[#e3e2e0] rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#004349]"
+                  >
+                    <option value={5}>⭐⭐⭐⭐⭐ (5/5 Excellent)</option>
+                    <option value={4}>⭐⭐⭐⭐ (4/5 Very Good)</option>
+                    <option value={3}>⭐⭐⭐ (3/5 Average)</option>
+                  </select>
+                  <select
+                    value={newReviewTag}
+                    onChange={(e) => setNewReviewTag(e.target.value)}
+                    className="px-3 py-2 bg-[#faf9f7] border border-[#e3e2e0] rounded-lg text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#004349]"
+                  >
+                    <option value="Step-Free Access">Step-Free Access</option>
+                    <option value="Comfortable Seating">Comfortable Seating</option>
+                    <option value="Clean Toilets">Clean Accessible Toilets</option>
+                    <option value="Quiet & Sheltered">Quiet & Sheltered</option>
+                  </select>
+                </div>
+
+                <textarea
+                  required
+                  rows={2}
+                  value={newReviewComment}
+                  onChange={(e) => setNewReviewComment(e.target.value)}
+                  placeholder="Share practical tips for seniors (e.g. elevator location, quiet hours, ramp access)..."
+                  className="w-full px-3 py-2 bg-[#faf9f7] border border-[#e3e2e0] rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#004349]"
+                />
+
+                <div className="flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsAddingReview(false)}
+                    className="px-3 py-1.5 text-xs font-bold text-[#73787a] cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-1.5 bg-[#004349] text-white text-xs font-bold rounded-lg shadow-sm cursor-pointer hover:bg-[#0d5c63]"
+                  >
+                    Submit Review
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* List of Spot Reviews */}
+            <div className="flex flex-col gap-3">
+              {reviews.map((rev) => (
+                <div key={rev.id} className="bg-white p-4 rounded-xl border border-[#e3e2e0] flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="font-headline font-bold text-sm text-[#1a1c1b]">
+                        {rev.author}
+                      </span>
+                      <div className="flex text-[#a73927] text-xs">
+                        {'★'.repeat(rev.rating)}
+                      </div>
+                    </div>
+                    <span className="text-[11px] text-[#73787a]">{rev.timestamp}</span>
+                  </div>
+
+                  <p className="text-sm text-[#3f484a] leading-relaxed">
+                    {rev.comment}
+                  </p>
+
+                  <div className="flex items-center justify-between pt-1 border-t border-gray-100 text-xs">
+                    <div className="flex gap-1.5">
+                      {rev.tags.map((t, idx) => (
+                        <span key={idx} className="px-2 py-0.5 bg-[#abeef6]/30 text-[#004349] rounded-full font-bold text-[10px]">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleHelpful(rev.id)}
+                      className={`inline-flex items-center gap-1 cursor-pointer font-semibold ${
+                        rev.hasMarkedHelpful ? 'text-[#a73927]' : 'text-[#73787a] hover:text-[#004349]'
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-[14px]">thumb_up</span>
+                      <span>Helpful ({rev.helpfulCount})</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
