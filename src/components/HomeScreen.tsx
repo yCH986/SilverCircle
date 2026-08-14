@@ -1,5 +1,6 @@
 import React from 'react';
 import { AppScreen } from '../types';
+import { DisqusForum } from './DisqusForum';
 
 interface HomeScreenProps {
   onStartExploring: () => void;
@@ -157,6 +158,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           </div>
         </div>
       </section>
+
+      {/* Community Discussion Forum & Comments (Disqus) */}
+      <DisqusForum />
     </div>
   );
 };

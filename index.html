@@ -3,6 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      window.onerror = function (msg, url, line, col, error) {
+        if (typeof msg === 'string' && (msg.includes('Script error') || (url && url.includes('disqus')))) {
+          return true;
+        }
+      };
+      window.addEventListener('error', function (e) {
+        if (e.message === 'Script error.' || (e.filename && e.filename.includes('disqus'))) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          return true;
+        }
+      }, true);
+    </script>
+    <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "y25hnpqwkp");
+    </script>
     <title>SilverCircle — Find Your Circle. Discover Your Next Favorite Spot.</title>
     <meta name="description" content="A senior community platform designed for connection and accessibility. Find vetted hangout spots and like-minded friends in Singapore districts." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
